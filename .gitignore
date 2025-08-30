@@ -4,3 +4,5 @@ writing-a-c-compiler-tests/
 compilador/telemachus
 compilador/telemachus.hi
 compilador/telemachus.o
+simple_program.i
+simple_program.s
