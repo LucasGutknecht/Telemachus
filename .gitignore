@@ -1,8 +1,24 @@
+# Ambientes e testes
 ambiente/
 writing-a-c-compiler-tests/
-.gitignore
+
+# Executável do compilador (sem extensão)
 compilador/telemachus
-compilador/telemachus.hi
-compilador/telemachus.o
+
+# Arquivos intermediários do Haskell
+*.hi
+*.o
+
+# Arquivos intermediários do GCC
+*.i
+*.s
+
+# Ou se quiser ser mais específico para a pasta compilador:
+compilador/*.hi
+compilador/*.o
+compilador/telemachus
+
+# Arquivos de teste na raiz
 simple_program.i
 simple_program.s
+simple_program
