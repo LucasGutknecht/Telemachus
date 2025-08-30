@@ -10,6 +10,7 @@ import Control.Monad (when)
 -- Melhorias a fazer: 3 - Melhorar o tratamento de erros
 -- Melhorias a fazer: 4 - Melhorar as mensagens de erros
 -- Melhorias a fazer: 5 - Adicionar mais opcoes de flags do compilador
+-- Melhorias a fazer: 6 - Adicionar a opcao do Lexer para produzir os tokens
 
 contemExtensaoC :: String -> Bool
 contemExtensaoC s = takeExtension s == ".c"
