@@ -1,3 +1,8 @@
+module Telemachus where
+
+-- modulos
+import Lexer (Token(..))
+
 import System.Environment
 import System.Process
 import System.FilePath (dropExtension, takeExtension)

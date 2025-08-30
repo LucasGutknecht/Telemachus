@@ -1,0 +1,6 @@
+cradle:
+  direct:
+    arguments:
+      - -icompilador
+      - compilador/Telemachus.hs
+      - compilador/Lexer.hs

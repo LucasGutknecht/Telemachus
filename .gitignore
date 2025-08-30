@@ -22,3 +22,6 @@ compilador/telemachus
 simple_program.i
 simple_program.s
 simple_program
+
+# hie.yaml Arquivo de configuração do Haskell IDE Engine
+# hie.yaml
