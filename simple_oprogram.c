@@ -1,1 +1,2 @@
-int main(void) { return 2; }
+// simple program
+int main(void) { return 4; }
