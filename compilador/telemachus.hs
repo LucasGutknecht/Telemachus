@@ -85,7 +85,7 @@ main = do
                         (preprocessarArquivo x)
                         "Pré-processamento concluído com sucesso."
 
-                    when sucesso1 $ do  -- Agora pode usar 'when' direto
+                    when sucesso1 $ do
                         sucesso2 <- executarEtapa
                             (compilarArquivoPreprocessado x)
                             "Assembly gerado com sucesso."
