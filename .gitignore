@@ -1,3 +1,6 @@
 ambiente/
 writing-a-c-compiler-tests/
 .gitignore
+compilador/telemachus
+compilador/telemachus.hi
+compilador/telemachus.o
