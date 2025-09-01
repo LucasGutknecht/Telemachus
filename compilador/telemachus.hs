@@ -1,7 +1,7 @@
 module Telemachus where
 
 -- modulos
-import Lexer (Token(..))
+import Lexer (Token(..), tokenize, printToken)
 
 import System.Environment
 import System.Process
@@ -96,28 +96,61 @@ executarEtapa acao mensagemSucesso = do
             putStrLn mensagemSucesso
             return True
 
+-- Argumentos
+-- 1 - Nome do arquivo .c
+-- 2 - --lex Direciona o programa para executar o lexer, mas para antes do parser
+-- 3 - --parse Direciona o programa para executar o lexer e o parser, mas para antes da geracao de assembly
+-- 4 - --codegen Direciona para executar lexing, parsion and assembly code generation, mas para antes da emissao do codigo.
+argumentosTratados :: [String] -> IO ()
+argumentosTratados args = case args of
+    [] -> putStrLn "Sem argumentos"
+    (x:xs) -> do
+        if "--lex" `elem` xs
+            then do
+                if not (contemExtensaoC x)
+                    then putStrLn $ "Erro: " ++ x ++ " não é um arquivo .c"
+                    else lexer x
+            else if "--parse" `elem` xs
+                then do
+                    if not (contemExtensaoC x)
+                        then putStrLn $ "Erro: " ++ x ++ " não é um arquivo .c"
+                        else do
+                            lexer x
+                            putStrLn "Parser not implemented yet."
+                else if "--codegen" `elem` xs
+                    then do
+                        if not (contemExtensaoC x)
+                            then putStrLn $ "Erro: " ++ x ++ " não é um arquivo .c"
+                            else do
+                                lexer x
+                                putStrLn "Parser and codegen not implemented yet."
+                    else do
+                        if not (contemExtensaoC x)
+                            then putStrLn $ "Erro: " ++ x ++ " não é um arquivo .c"
+                            else do
+                                sucesso1 <- executarEtapa
+                                    (preprocessarArquivo x)
+                                    "Pré-processamento concluído com sucesso."
+                                when sucesso1 $ do
+                                    sucesso2 <- executarEtapa
+                                        (compilarArquivoPreprocessado x)
+                                        "Assembly gerado com sucesso."
+                                    when sucesso2 $ do
+                                        _ <- executarEtapa
+                                            (compilarArquivoExecutavel x)
+                                            "Executável gerado com sucesso!"
+                                        removeFiles [dropExtension x ++ ".i", dropExtension x ++ ".s"]
+                                        putStrLn "Arquivos intermediários removidos com sucesso."
+                                        return ()
+
+lexer :: String -> IO ()
+lexer arquivo = do
+    content <- readFile arquivo
+    let tokens = tokenize content
+    mapM_ (putStrLn . printToken) tokens
+
+
 main :: IO ()
 main = do
     args <- getArgs
-    case args of
-        [] -> putStrLn "Sem argumentos"
-        (x:xs) -> do
-            if not (contemExtensaoC x)
-                then putStrLn $ "Erro: " ++ x ++ " não é um arquivo .c"
-                else do
-                    sucesso1 <- executarEtapa
-                        (preprocessarArquivo x)
-                        "Pré-processamento concluído com sucesso."
-
-                    when sucesso1 $ do
-                        sucesso2 <- executarEtapa
-                            (compilarArquivoPreprocessado x)
-                            "Assembly gerado com sucesso."
-
-                        when sucesso2 $ do
-                            _ <- executarEtapa
-                                (compilarArquivoExecutavel x)
-                                "Executável gerado com sucesso!"
-                            removeFiles [dropExtension x ++ ".i", dropExtension x ++ ".s"]
-                            putStrLn "Arquivos intermediários removidos com sucesso."
-                            return ()
+    argumentosTratados args
